@@ -1,0 +1,234 @@
+/* Global Box Sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --gov-blue: #0000FF;
+  --gov-bg: #FFFFFF;
+  --gov-text: #000000;
+  --gov-header-bg: #EAEAEA;
+  --gov-border: #CCCCCC;
+  --gov-link: #0000FF;
+  --font-main: 'Arial', sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Sticky Footer Layout Fix */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 180px;
+  /* Space for fixed header */
+}
+
+/* Body padding for fixed header */
+body {
+  font-family: var(--font-main);
+  background-color: rgba(255, 255, 255, 0.85);
+  position: relative;
+  /* Removed padding-top from body, applied to #root */
+  /* padding-bottom removed for static footer */
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+/* Fixed Header */
+.header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--gov-bg);
+}
+
+.header {
+  background-color: var(--gov-header-bg);
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--gov-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Horizontal Navbar */
+.navbar {
+  background-color: #333;
+  color: white;
+  display: flex;
+  justify-content: center;
+  /* Center links? Or left? Govt usually centers or distributes */
+  padding: 0;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  /* Allow wrapping on small screens */
+  justify-content: center;
+}
+
+.navbar li {
+  position: relative;
+}
+
+.navbar a {
+  display: block;
+  color: white;
+  padding: 15px 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  background-color: #555;
+}
+
+/* Static Footer with Flexbox Push */
+.footer {
+  width: 100%;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  margin-top: auto;
+  /* Pushes footer to bottom in flex container */
+  font-size: 0.9rem;
+}
+
+/* Main Content Adjustment */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: block;
+  flex: 1;
+  /* Occupies remaining space */
+  width: 100%;
+}
+
+/* Main Content - Transparent Wrapper */
+.main-content {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  min-height: 500px;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Card Styling - Consistent with Layout */
+.card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--gov-blue);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 255, 0.1);
+}
+
+/* Buttons */
+.btn {
+  background-color: var(--gov-blue);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn:hover {
+  background-color: #0000cc;
+  /* Darker blue */
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-strip {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 5px 20px;
+  font-size: 0.8rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.nav-strip a {
+  color: #333;
+  margin-right: 15px;
+}
