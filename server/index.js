@@ -12,14 +12,13 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: process.env.CLIENT_URL || "http://localhost:5173", // Vite default port
+        origin: [process.env.CLIENT_URL, "http://localhost:5173", "https://shg-six.vercel.app"],
         methods: ["GET", "POST"]
     }
 });
 
 // Middleware
-app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+origin: [process.env.CLIENT_URL, "http://localhost:5173", "https://shg-six.vercel.app"],
     credentials: true
 }));
 app.use(express.json());
