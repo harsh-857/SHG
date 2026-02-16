@@ -18,7 +18,8 @@ const io = socketIo(server, {
 });
 
 // Middleware
-origin: [process.env.CLIENT_URL, "http://localhost:5173", "https://shg-six.vercel.app"],
+app.use(cors({
+    origin: [process.env.CLIENT_URL, "http://localhost:5173", "https://shg-six.vercel.app"],
     credentials: true
 }));
 app.use(express.json());
