@@ -31,7 +31,8 @@ const Login = () => {
                 navigate('/services');
             }
         } catch (err) {
-            setError(err.response?.data?.msg || 'Login failed');
+            const errorMsg = err.response?.data?.msg || (typeof err.response?.data === 'string' ? err.response.data : 'Login failed');
+            setError(errorMsg);
         }
     };
 

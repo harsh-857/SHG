@@ -10,18 +10,23 @@ dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
+
+// Middleware
+const clientUrl = (process.env.CLIENT_URL || process.env.CLIENT_URL_ || "https://shg-six.vercel.app").replace(/\/$/, "");
+
+const corsOptions = {
+    origin: [clientUrl, "http://localhost:5173", "https://shg-six.vercel.app"].filter(Boolean),
+    credentials: true
+};
+
+app.use(cors(corsOptions));
+
 const io = socketIo(server, {
     cors: {
-        origin: [process.env.CLIENT_URL, "http://localhost:5173", "https://shg-six.vercel.app"].filter(Boolean),
+        ...corsOptions,
         methods: ["GET", "POST"]
     }
 });
-
-// Middleware
-app.use(cors({
-    origin: [process.env.CLIENT_URL, "http://localhost:5173", "https://shg-six.vercel.app"].filter(Boolean),
-    credentials: true
-}));
 app.use(express.json());
 
 // Database Connection

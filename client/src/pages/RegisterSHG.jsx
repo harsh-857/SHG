@@ -25,7 +25,8 @@ const RegisterSHG = () => {
             setSuccess(res.data.msg);
             setError('');
         } catch (err) {
-            setError(err.response?.data?.msg || err.response?.data?.errors?.[0]?.msg || 'Registration failed');
+            const errorMsg = err.response?.data?.msg || err.response?.data?.errors?.[0]?.msg || (typeof err.response?.data === 'string' ? err.response.data : 'Registration failed');
+            setError(errorMsg);
         }
     };
 
