@@ -9,8 +9,11 @@ const Admin = require('../models/Admin');
 exports.registerUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        console.log('Validation errors:', errors.array());
         return res.status(400).json({ errors: errors.array() });
     }
+
+    console.log('Registering user:', req.body.email);
 
     const { name, email, password, village, block } = req.body;
 
