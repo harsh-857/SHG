@@ -73,6 +73,9 @@ io.on('connection', (socket) => {
     });
 });
 
+// Health Check
+app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/admin', require('./routes/admin'));
