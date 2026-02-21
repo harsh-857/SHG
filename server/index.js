@@ -15,8 +15,18 @@ const server = http.createServer(app);
 const clientUrl = (process.env.CLIENT_URL || process.env.CLIENT_URL_ || "https://shg-six.vercel.app").replace(/\/$/, "");
 
 const corsOptions = {
-    origin: [clientUrl, "http://localhost:5173", "https://shg-six.vercel.app"].filter(Boolean),
-    credentials: true
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl) 
+        // or any origin from vercel.app or localhost
+        if (!origin || origin.includes('vercel.app') || origin.includes('localhost')) {
+            callback(null, true);
+        } else {
+            console.log('CORS Blocked for origin:', origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
 app.use(cors(corsOptions));
