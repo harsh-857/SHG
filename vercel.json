@@ -1,12 +1,14 @@
 {
+    "version": 2,
+    "public": "client/dist",
     "rewrites": [
         {
             "source": "/api/:path*",
-            "destination": "/server/:path*"
+            "destination": "https://shg-6s8l.onrender.com/api/:path*"
         },
         {
             "source": "/(.*)",
-            "destination": "/client/index.html"
+            "destination": "/client/dist/index.html"
         }
     ]
 }
