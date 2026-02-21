@@ -26,6 +26,7 @@ const RegisterConsumer = () => {
             login(res.data.token, res.data.user);
             navigate('/services');
         } catch (err) {
+            console.error('Registration error details:', err.response?.data);
             const errorMsg = err.response?.data?.msg || err.response?.data?.errors?.[0]?.msg || (typeof err.response?.data === 'string' ? err.response.data : 'Registration failed');
             setError(errorMsg);
         }

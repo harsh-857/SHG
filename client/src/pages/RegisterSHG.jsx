@@ -25,6 +25,7 @@ const RegisterSHG = () => {
             setSuccess(res.data.msg);
             setError('');
         } catch (err) {
+            console.error('Registration SHG error details:', err.response?.data);
             const errorMsg = err.response?.data?.msg || err.response?.data?.errors?.[0]?.msg || (typeof err.response?.data === 'string' ? err.response.data : 'Registration failed');
             setError(errorMsg);
         }

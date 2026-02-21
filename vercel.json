@@ -1,6 +1,15 @@
 {
     "version": 2,
-    "public": "client/dist",
+    "public": false,
+    "builds": [
+        {
+            "src": "client/package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "dist"
+            }
+        }
+    ],
     "rewrites": [
         {
             "source": "/api/:path*",
@@ -8,7 +17,7 @@
         },
         {
             "source": "/(.*)",
-            "destination": "/client/dist/index.html"
+            "destination": "/index.html"
         }
     ]
 }

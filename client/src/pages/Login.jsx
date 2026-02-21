@@ -31,6 +31,7 @@ const Login = () => {
                 navigate('/services');
             }
         } catch (err) {
+            console.error('Login error details:', err.response?.data);
             const errorMsg = err.response?.data?.msg || (typeof err.response?.data === 'string' ? err.response.data : 'Login failed');
             setError(errorMsg);
         }
