@@ -27,14 +27,14 @@ router.get('/search', async (req, res) => {
         // 3. Others
         // We can do this in memory since dataset is likely small for a district, or use complex aggregation. In-memory is easier for MERN starter.
 
-        const consumerVillage = village ? village.toLowerCase() : '';
-        const consumerBlock = block ? block.toLowerCase() : '';
+        const consumerVillage = village ? village.trim().toLowerCase() : '';
+        const consumerBlock = block ? block.trim().toLowerCase() : '';
 
         providers.sort((a, b) => {
-            const aVillage = a.village.toLowerCase() === consumerVillage;
-            const bVillage = b.village.toLowerCase() === consumerVillage;
-            const aBlock = a.block.toLowerCase() === consumerBlock;
-            const bBlock = b.block.toLowerCase() === consumerBlock;
+            const aVillage = a.village?.trim().toLowerCase() === consumerVillage;
+            const bVillage = b.village?.trim().toLowerCase() === consumerVillage;
+            const aBlock = a.block?.trim().toLowerCase() === consumerBlock;
+            const bBlock = b.block?.trim().toLowerCase() === consumerBlock;
 
             if (aVillage && !bVillage) return -1;
             if (!aVillage && bVillage) return 1;

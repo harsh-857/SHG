@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 
 const RegisterConsumer = () => {
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -21,8 +23,7 @@ const RegisterConsumer = () => {
         e.preventDefault();
         try {
             const res = await api.post('/auth/register-user', formData);
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('user', JSON.stringify(res.data.user));
+            login(res.data.token, res.data.user);
             navigate('/services');
         } catch (err) {
             setError(err.response?.data?.msg || err.response?.data?.errors?.[0]?.msg || 'Registration failed');

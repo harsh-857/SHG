@@ -3,22 +3,16 @@ import api from '../utils/api';
 import ChatWindow from '../components/ChatWindow';
 import AppointmentModal from '../components/AppointmentModal';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Services = () => {
+    const { user: currentUser } = useAuth();
     const [providers, setProviders] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [showChat, setShowChat] = useState(false);
     const [chatPartner, setChatPartner] = useState(null);
-    const [currentUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const userStr = localStorage.getItem('user');
-        if (userStr) {
-            setCurrentUser(JSON.parse(userStr));
-        }
-    }, []);
 
     const categories = [
         'Housekeeping Services',
@@ -31,7 +25,6 @@ const Services = () => {
         setLoading(true);
         setSelectedCategory(category);
         try {
-            // Get user location from stored user object if available
             const village = currentUser?.village || '';
             const block = currentUser?.block || '';
 
@@ -142,7 +135,7 @@ const Services = () => {
                 </div>
             )}
 
-            {/* Chat Window */}
+            {/* Modals */}
             {showChat && chatPartner && currentUser && (
                 <ChatWindow
                     currentUser={currentUser}
@@ -151,7 +144,6 @@ const Services = () => {
                 />
             )}
 
-            {/* Appointment Modal */}
             {showAppointmentModal && appointmentProvider && currentUser && (
                 <AppointmentModal
                     provider={appointmentProvider}

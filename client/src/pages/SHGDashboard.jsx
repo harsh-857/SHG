@@ -1,31 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const SHGDashboard = () => {
-    const [user, setUser] = useState(null);
+    const { user, loading } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('user'));
-        if (!storedUser || storedUser.role !== 'shg') {
+        if (!loading && (!user || user.role !== 'shg')) {
             navigate('/login');
-        } else {
-            setUser(storedUser);
         }
-    }, [navigate]);
+    }, [user, loading, navigate]);
 
+    if (loading) return <p>Loading...</p>;
     if (!user) return null;
 
     return (
-        <div>
-            <h1>SHG Provider Dashboard</h1>
-            <div className="card">
-                <h2>Welcome, {user.name}</h2>
-                <p>Status: <span style={{ color: 'green', fontWeight: 'bold' }}>Active & Verified</span></p>
-                <p>Your Service Category: <strong>{user.serviceCategory}</strong> (Need to fetch full profile to show this if not in token, but assuming basic access for now)</p>
+        <div className='card' style={{ maxWidth: '600px', margin: '20px auto' }}>
+            <h2>SHG Dashboard</h2>
+            <p><strong>Name:</strong> {user.name}</p>
+            <p><strong>Email:</strong> {user.email}</p>
+            <p><strong>Category:</strong> {user.serviceCategory}</p>
+            <p><strong>Location:</strong> {user.village}, {user.block}</p>
+            <p><strong>Status:</strong> <span style={{ color: 'green', fontWeight: 'bold' }}>Approved</span></p>
 
-                <h3>Manage Services</h3>
-                <p>You can receive service requests from this panel (Feature coming soon).</p>
+            <div style={{ marginTop: '20px' }}>
+                <h3>Actions</h3>
+                <button className='btn' style={{ marginRight: '10px' }}>View Appointments</button>
+                <button className='btn'>Edit Profile</button>
             </div>
         </div>
     );

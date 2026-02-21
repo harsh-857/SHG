@@ -1,7 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const onLogout = () => {
+        logout();
+        navigate('/');
+    };
+
     return (
         <div className="header-container">
             <div className="nav-strip">
@@ -19,7 +28,6 @@ const Header = () => {
                         <div style={{ fontSize: '0.8rem', color: '#555' }}>Government of Uttar Pradesh</div>
                     </div>
                 </div>
-
             </header>
 
             <nav className="navbar">
@@ -28,8 +36,19 @@ const Header = () => {
                     <li><Link to="/about">About SHG Platform</Link></li>
                     <li><Link to="/services">Services</Link></li>
                     <li><a href="https://muzaffarnagar.nic.in/" target="_blank" rel="noopener noreferrer">District Profile</a></li>
-                    <li><Link to="/register-select">Register</Link></li>
-                    <li><Link to="/login-select">Login</Link></li>
+
+                    {user ? (
+                        <>
+                            {user.role === 'admin' && <li><Link to='/admin'>Admin</Link></li>}
+                            {user.role === 'shg' && <li><Link to='/shg-dashboard'>Dashboard</Link></li>}
+                            <li><button onClick={onLogout} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: '0', font: 'inherit' }}>Logout</button></li>
+                        </>
+                    ) : (
+                        <>
+                            <li><Link to='/register-select'>Register</Link></li>
+                            <li><Link to='/login-select'>Login</Link></li>
+                        </>
+                    )}
                 </ul>
             </nav>
         </div>

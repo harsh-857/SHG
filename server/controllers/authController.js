@@ -137,7 +137,7 @@ exports.login = async (req, res) => {
 
         // Check if SHG is approved
         if (role === 'shg' && user.shgStatus !== 'approved') {
-            return res.status(403).json({ msg: 'Account not approved by admin yet' });
+            return res.status(403).json({ msg: 'Your account is pending admin approval. Please wait for verification.' });
         }
 
         const payload = {
@@ -150,10 +150,20 @@ exports.login = async (req, res) => {
         jwt.sign(
             payload,
             process.env.JWT_SECRET,
-            { expiresIn: 360000 },
+            { expiresIn: '24h' },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token, user: { id: user.id, name: user.name, role: role } });
+                res.json({
+                    token,
+                    user: {
+                        id: user.id,
+                        name: user.name,
+                        role: role,
+                        email: user.email,
+                        village: user.village,
+                        block: user.block
+                    }
+                });
             }
         );
     } catch (err) {

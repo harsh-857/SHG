@@ -202,6 +202,28 @@ body::before {
   transition: background-color 0.2s, transform 0.1s;
 }
 
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.admin-table th {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.admin-table tr:hover {
+  background-color: #fafafa;
+}
+
 .btn:hover {
   background-color: #0000cc;
   /* Darker blue */

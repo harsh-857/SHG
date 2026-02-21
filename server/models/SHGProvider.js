@@ -42,4 +42,9 @@ const SHGProviderSchema = new mongoose.Schema({
     },
 });
 
+// Add indexes for location-based filtering
+SHGProviderSchema.index({ village: 1 });
+SHGProviderSchema.index({ block: 1 });
+SHGProviderSchema.index({ serviceCategory: 1 });
+
 module.exports = mongoose.model('SHGProvider', SHGProviderSchema);

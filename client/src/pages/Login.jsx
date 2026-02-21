@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -18,8 +20,7 @@ const Login = () => {
         e.preventDefault();
         try {
             const res = await api.post('/auth/login', { email, password });
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('user', JSON.stringify(res.data.user));
+            login(res.data.token, res.data.user);
 
             // Redirect based on role
             if (res.data.user.role === 'admin') {
@@ -27,7 +28,7 @@ const Login = () => {
             } else if (res.data.user.role === 'shg') {
                 navigate('/shg-dashboard');
             } else {
-                navigate('/services'); // or consumer dashboard
+                navigate('/services');
             }
         } catch (err) {
             setError(err.response?.data?.msg || 'Login failed');

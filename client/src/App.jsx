@@ -13,28 +13,32 @@ import About from './pages/About';
 import LoginSelect from './pages/LoginSelect';
 import RegisterSelect from './pages/RegisterSelect';
 
+import { AuthProvider } from './context/AuthContext';
+
 function App() {
     return (
-        <Router>
-            <Header />
-            <div className="container" style={{ marginTop: '20px' }}>
-                <main className="main-content">
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/login-select" element={<LoginSelect />} />
-                        <Route path="/register-select" element={<RegisterSelect />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register-consumer" element={<RegisterConsumer />} />
-                        <Route path="/register-shg" element={<RegisterSHG />} />
-                        <Route path="/services" element={<Services />} />
-                        <Route path="/admin" element={<AdminDashboard />} />
-                        <Route path="/shg-dashboard" element={<SHGDashboard />} />
-                    </Routes>
-                </main>
-            </div>
-            <Footer />
-        </Router>
+        <AuthProvider>
+            <Router>
+                <Header />
+                <div className="container" style={{ marginTop: '20px' }}>
+                    <main className="main-content">
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/login-select" element={<LoginSelect />} />
+                            <Route path="/register-select" element={<RegisterSelect />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register-consumer" element={<RegisterConsumer />} />
+                            <Route path="/register-shg" element={<RegisterSHG />} />
+                            <Route path="/services" element={<Services />} />
+                            <Route path="/admin" element={<AdminDashboard />} />
+                            <Route path="/shg-dashboard" element={<SHGDashboard />} />
+                        </Routes>
+                    </main>
+                </div>
+                <Footer />
+            </Router>
+        </AuthProvider>
     );
 }
 

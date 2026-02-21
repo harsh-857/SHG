@@ -21,9 +21,19 @@ router.get('/pending-shg', auth, isAdmin, adminController.getPendingSHGs);
 // @access  Private (Admin only)
 router.put('/approve-shg/:id', auth, isAdmin, adminController.approveSHG);
 
-// @route   DELETE api/admin/reject-shg/:id
-// @desc    Reject/Delete SHG
+// @route   GET api/admin/users
+// @desc    Get all users
 // @access  Private (Admin only)
-router.delete('/reject-shg/:id', auth, isAdmin, adminController.rejectSHG);
+router.get('/users', auth, isAdmin, adminController.getAllUsers);
+
+// @route   GET api/admin/shgs
+// @desc    Get all SHGs
+// @access  Private (Admin only)
+router.get('/shgs', auth, isAdmin, adminController.getAllSHGs);
+
+// @route   DELETE api/admin/user/:id
+// @desc    Delete a user
+// @access  Private (Admin only)
+router.delete('/user/:id', auth, isAdmin, adminController.deleteUser);
 
 module.exports = router;
