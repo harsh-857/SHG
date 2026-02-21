@@ -9,4 +9,6 @@ const api = axios.create({
     }
 });
 
+console.log('Final API Request URL path will be:', (api.defaults.baseURL || '') + '/auth/register-user');
+
 export default api;

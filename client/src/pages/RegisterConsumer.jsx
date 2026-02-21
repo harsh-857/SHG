@@ -27,7 +27,18 @@ const RegisterConsumer = () => {
             navigate('/services');
         } catch (err) {
             console.error('Registration error details:', err.response?.data);
-            const errorMsg = err.response?.data?.msg || err.response?.data?.errors?.[0]?.msg || (typeof err.response?.data === 'string' ? err.response.data : 'Registration failed');
+            const rawError = err.response?.data;
+            let errorMsg = 'Registration failed';
+
+            if (rawError) {
+                if (typeof rawError === 'string') errorMsg = rawError;
+                else if (rawError.msg) errorMsg = rawError.msg;
+                else if (rawError.errors && rawError.errors[0]) errorMsg = rawError.errors[0].msg;
+                else errorMsg = JSON.stringify(rawError);
+            } else if (err.message) {
+                errorMsg = err.message;
+            }
+
             setError(errorMsg);
         }
     };
