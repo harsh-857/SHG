@@ -12,14 +12,14 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: [process.env.CLIENT_URL, "http://localhost:5173", "https://shg-six.vercel.app", "https://shg-eight.vercel.app"].filter(Boolean),
+        origin: [process.env.CLIENT_URL, "http://localhost:5173", "https://shg-six.vercel.app"].filter(Boolean),
         methods: ["GET", "POST"]
     }
 });
 
 // Middleware
 app.use(cors({
-    origin: [process.env.CLIENT_URL, "http://localhost:5173", "https://shg-six.vercel.app", "https://shg-eight.vercel.app"].filter(Boolean),
+    origin: [process.env.CLIENT_URL, "http://localhost:5173", "https://shg-six.vercel.app"].filter(Boolean),
     credentials: true
 }));
 app.use(express.json());
