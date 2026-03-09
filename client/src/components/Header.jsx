@@ -22,7 +22,7 @@ const Header = () => {
 
             <header className="header">
                 <div className="logo">
-                    <img src="/logo.jpg" alt="Emblem" style={{ height: '80px', borderRadius: '50%' }} />
+                    <img src="/src/assets/logo.jpg" alt="Emblem" style={{ height: '80px', borderRadius: '50%' }} />
                     <div>
                         <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>SHUKTEERTH SHUDDHA</div>
                         <div style={{ fontSize: '0.8rem', color: '#555' }}>Government of Uttar Pradesh</div>
