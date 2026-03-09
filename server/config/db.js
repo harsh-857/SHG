@@ -7,7 +7,7 @@ const connectDB = async () => {
         console.log('MongoDB Connected Successfully');
     } catch (err) {
         console.error('MongoDB Connection Error:', err.message);
-        process.exit(1);
+        console.error('Please ensure your IP is whitelisted in MongoDB Atlas and the MONGO_URI is correct.');
     }
 };
 
