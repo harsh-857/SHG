@@ -43,15 +43,12 @@ exports.registerUser = async (req, res) => {
             },
         };
 
-        jwt.sign(
+        const token = jwt.sign(
             payload,
-            process.env.JWT_SECRET,
-            { expiresIn: 360000 },
-            (err, token) => {
-                if (err) throw err;
-                res.json({ token, user: { id: user.id, name: user.name, role: 'consumer' } });
-            }
+            process.env.JWT_SECRET || 'fallback_secret_for_development_only',
+            { expiresIn: 360000 }
         );
+        res.json({ token, user: { id: user.id, name: user.name, role: 'consumer' } });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ msg: 'Server error', error: err.message });
@@ -150,25 +147,22 @@ exports.login = async (req, res) => {
             },
         };
 
-        jwt.sign(
+        const token = jwt.sign(
             payload,
-            process.env.JWT_SECRET,
-            { expiresIn: '24h' },
-            (err, token) => {
-                if (err) throw err;
-                res.json({
-                    token,
-                    user: {
-                        id: user.id,
-                        name: user.name,
-                        role: role,
-                        email: user.email,
-                        village: user.village,
-                        block: user.block
-                    }
-                });
-            }
+            process.env.JWT_SECRET || 'fallback_secret_for_development_only',
+            { expiresIn: '24h' }
         );
+        res.json({
+            token,
+            user: {
+                id: user.id,
+                name: user.name,
+                role: role,
+                email: user.email,
+                village: user.village,
+                block: user.block
+            }
+        });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ msg: 'Server error', error: err.message });
