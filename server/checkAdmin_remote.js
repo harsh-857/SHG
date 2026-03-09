@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
 const Admin = require('./models/Admin');
-const dotenv = require('dotenv');
-dotenv.config();
+
+const atlasUri = "mongodb+srv://harshsharmavs000_db_user:kO9Qr9I6mGyOhqwx@user.bhv6e9x.mongodb.net/shg?appName=user";
 
 const checkAdmin = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/shg');
+        console.log('Connecting to Atlas...');
+        await mongoose.connect(atlasUri);
         const admin = await Admin.findOne({ email: 'admin@gmail.com' });
         if (admin) {
-            console.log('Admin found:', admin.email);
+            console.log('Admin found in Atlas:', admin.email);
             console.log('Role:', admin.role);
         } else {
-            console.log('Admin NOT found');
+            console.log('Admin NOT found in Atlas');
         }
         process.exit(0);
     } catch (err) {

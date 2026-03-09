@@ -10,7 +10,8 @@ const ChatWindow = ({ currentUser, otherUser, onClose }) => {
 
     useEffect(() => {
         // Connect to Socket.io
-        socket.current = io(import.meta.env.VITE_SOCKET_URL || 'https://shg-6s8l.onrender.com' || 'http://localhost:5000');
+        const socketUrl = import.meta.env.VITE_SOCKET_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://shg-6s8l.onrender.com');
+        socket.current = io(socketUrl);
 
         // Join my own room
         socket.current.emit('join', currentUser._id);

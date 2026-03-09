@@ -2,8 +2,8 @@ const axios = require('axios');
 
 const testLogin = async () => {
     try {
-        console.log('Attempting login to http://localhost:5001/api/auth/login...');
-        const res = await axios.post('http://localhost:5001/api/auth/login', {
+        console.log('Attempting login to http://localhost:5000/api/auth/login...');
+        const res = await axios.post('http://localhost:5000/api/auth/login', {
             email: 'admin@gmail.com',
             password: 'admin123'
         });
