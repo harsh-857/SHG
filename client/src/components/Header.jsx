@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+import logoImg from '../assets/logo.jpg';
+
 const Header = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -22,7 +24,7 @@ const Header = () => {
 
             <header className="header">
                 <div className="logo">
-                    <img src="/src/assets/logo.jpg" alt="Emblem" style={{ height: '80px', borderRadius: '50%' }} />
+                    <img src={logoImg} alt="Emblem" style={{ height: '80px', borderRadius: '50%' }} />
                     <div>
                         <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>SHUKTEERTH SHUDDHA</div>
                         <div style={{ fontSize: '0.8rem', color: '#555' }}>Government of Uttar Pradesh</div>
