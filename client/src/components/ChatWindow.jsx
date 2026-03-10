@@ -16,16 +16,20 @@ const ChatWindow = ({ currentUser, otherUser, onClose }) => {
         // Join my own room
         socket.current.emit('join', currentUser._id);
 
-        // Fetch history
-        const fetchHistory = async () => {
+        // Fetch history and mark as read
+        const fetchHistoryAndMarkRead = async () => {
             try {
+                // Mark messages from otherUser to currentUser as read
+                await api.put(`/chat/mark-read/${otherUser._id}`);
+
+                // Fetch history
                 const res = await api.get(`/chat/history/${otherUser._id}`);
                 setMessages(res.data);
             } catch (err) {
                 console.error(err);
             }
         };
-        fetchHistory();
+        fetchHistoryAndMarkRead();
 
         // Listen for incoming messages
         socket.current.on('receiveMessage', (message) => {
