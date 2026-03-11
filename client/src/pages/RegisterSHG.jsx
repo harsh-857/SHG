@@ -82,6 +82,8 @@ const RegisterSHG = () => {
                         <option value="Beauty Parlour Course / Services">Beauty Parlour Course / Services</option>
                         <option value="Tailoring Services">Tailoring Services</option>
                         <option value="Papad and Pickle Making">Papad and Pickle Making</option>
+                        <option value="Cooking">Cooking</option>
+                        <option value="Baby Sitting">Baby Sitting</option>
                     </select>
                 </div>
                 <button type='submit' className='btn' style={{ width: '100%' }}>Register as SHG</button>

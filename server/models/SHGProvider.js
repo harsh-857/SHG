@@ -25,7 +25,7 @@ const SHGProviderSchema = new mongoose.Schema({
     serviceCategory: {
         type: String,
         required: true,
-        enum: ['Housekeeping Services', 'Beauty Parlour Course / Services', 'Tailoring Services', 'Papad and Pickle Making'],
+        enum: ['Housekeeping Services', 'Beauty Parlour Course / Services', 'Tailoring Services', 'Papad and Pickle Making', 'Cooking', 'Baby Sitting'],
     },
     shgStatus: {
         type: String,

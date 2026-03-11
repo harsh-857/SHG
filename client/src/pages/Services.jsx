@@ -18,7 +18,9 @@ const Services = () => {
         'Housekeeping Services',
         'Beauty Parlour Course / Services',
         'Tailoring Services',
-        'Papad and Pickle Making'
+        'Papad and Pickle Making',
+        'Cooking',
+        'Baby Sitting'
     ];
 
     const fetchProviders = async (category) => {
