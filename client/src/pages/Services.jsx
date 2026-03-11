@@ -71,7 +71,7 @@ const Services = () => {
                         onClick={() => fetchProviders(cat)}
                         className={`btn ${selectedCategory === cat ? 'active' : ''}`}
                         style={{
-                            backgroundColor: selectedCategory === cat ? '#0000cc' : '#333',
+                            backgroundColor: selectedCategory === cat ? '#333' : 'var(--gov-slate)',
                             flex: '1 1 200px'
                         }}
                     >
@@ -87,7 +87,7 @@ const Services = () => {
                     {loading ? <p>Loading...</p> : (
                         providers.length === 0 ? <p>No providers found for this category yet.</p> : (
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
-                                {providers.map(provider => (
+                                {providers.filter(p => !currentUser || p._id !== currentUser._id).map(provider => (
                                     <div key={provider._id} className="card">
                                         <h3>{provider.name}</h3>
                                         <p><strong>Village:</strong> {provider.village}</p>
@@ -97,9 +97,9 @@ const Services = () => {
                                         {currentUser && (
                                             <div style={{ fontSize: '0.85rem', color: '#555', marginBottom: '10px' }}>
                                                 {provider.village?.toLowerCase() === currentUser.village?.toLowerCase() ?
-                                                    <span style={{ color: 'green', fontWeight: 'bold' }}>✓ Same Village</span> :
+                                                    <span style={{ color: 'var(--gov-blue)', fontWeight: 'bold' }}>✓ Same Village</span> :
                                                     (provider.block?.toLowerCase() === currentUser.block?.toLowerCase() ?
-                                                        <span style={{ color: 'blue' }}>✓ Same Block</span> :
+                                                        <span style={{ color: 'var(--gov-link)' }}>✓ Same Block</span> :
                                                         'District Provider'
                                                     )
                                                 }
@@ -113,13 +113,16 @@ const Services = () => {
                                         >
                                             Message / Connect
                                         </button>
-                                        <button
-                                            className="btn"
-                                            style={{ width: '100%', marginTop: '5px', backgroundColor: '#28a745' }}
-                                            onClick={() => handleBook(provider)}
-                                        >
-                                            Book Appointment
-                                        </button>
+
+                                        {(!currentUser || currentUser.role !== 'shg') && (
+                                            <button
+                                                className="btn"
+                                                style={{ width: '100%', marginTop: '5px', backgroundColor: 'var(--gov-link)' }}
+                                                onClick={() => handleBook(provider)}
+                                            >
+                                                Book Appointment
+                                            </button>
+                                        )}
                                     </div>
                                 ))}
                             </div>

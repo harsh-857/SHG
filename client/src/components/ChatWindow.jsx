@@ -77,26 +77,77 @@ const ChatWindow = ({ currentUser, otherUser, onClose }) => {
 
     return (
         <div className="chat-window-overlay" style={{
-            position: 'fixed', bottom: '20px', right: '20px', width: '300px',
-            backgroundColor: 'white', border: '1px solid #ccc', borderRadius: '8px',
-            boxShadow: '0 4px 8px rgba(0,0,0,0.2)', zIndex: 1001, display: 'flex', flexDirection: 'column'
+            position: 'fixed',
+            bottom: window.innerWidth <= 768 ? '0' : '20px',
+            right: window.innerWidth <= 768 ? '0' : '20px',
+            width: window.innerWidth <= 768 ? '100%' : '450px',
+            height: window.innerWidth <= 768 ? '100%' : '600px',
+            backgroundColor: 'rgba(255, 255, 255, 0.98)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: window.innerWidth <= 768 ? 'none' : '1px solid rgba(255, 255, 255, 0.5)',
+            borderRadius: window.innerWidth <= 768 ? '0' : '20px',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+            zIndex: 2000,
+            display: 'flex',
+            flexDirection: 'column',
+            animation: 'slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+            overflow: 'hidden'
         }}>
             <div style={{
-                padding: '10px', backgroundColor: '#333', color: 'white',
-                borderTopLeftRadius: '8px', borderTopRightRadius: '8px',
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                padding: '15px 20px',
+                backgroundColor: 'rgba(51, 51, 51, 0.95)',
+                color: 'white',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
             }}>
-                <span>Chat with {otherUser.name}</span>
-                <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>X</button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: '10px', height: '10px', backgroundColor: '#2ecc71', borderRadius: '50%' }}></div>
+                    <span style={{ fontWeight: '600' }}>Chat with {otherUser.name}</span>
+                </div>
+                <button onClick={onClose} style={{
+                    background: 'rgba(255,255,255,0.1)',
+                    border: 'none',
+                    color: 'white',
+                    cursor: 'pointer',
+                    borderRadius: '50%',
+                    width: '30px',
+                    height: '30px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'background 0.2s'
+                }}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 1L1 13M1 1L13 13" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                </button>
             </div>
 
-            <div style={{ height: '300px', overflowY: 'auto', padding: '10px', display: 'flex', flexDirection: 'column' }}>
+            <div style={{
+                flex: 1,
+                overflowY: 'auto',
+                padding: '25px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px',
+                backgroundColor: 'rgba(248, 249, 250, 0.3)'
+            }}>
                 {messages.map((msg, index) => (
                     <div key={index} style={{
-                        maxWidth: '80%', padding: '8px', margin: '5px', borderRadius: '8px',
+                        maxWidth: '85%',
+                        padding: '12px 16px',
+                        margin: '5px 0',
+                        borderRadius: '14px',
+                        fontSize: '1rem',
+                        lineHeight: '1.4',
                         alignSelf: msg.sender === currentUser._id ? 'flex-end' : 'flex-start',
-                        backgroundColor: msg.sender === currentUser._id ? '#007bff' : '#f1f1f1',
-                        color: msg.sender === currentUser._id ? 'white' : 'black'
+                        backgroundColor: msg.sender === currentUser._id ? 'var(--gov-blue)' : '#ffffff',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                        color: msg.sender === currentUser._id ? 'white' : '#333',
+                        border: msg.sender === currentUser._id ? 'none' : '1px solid #eee'
                     }}>
                         {msg.content}
                     </div>
@@ -104,16 +155,36 @@ const ChatWindow = ({ currentUser, otherUser, onClose }) => {
                 <div ref={messagesEndRef} />
             </div>
 
-            <div style={{ padding: '10px', display: 'flex' }}>
+            <div style={{ padding: '20px 25px', display: 'flex', gap: '15px', backgroundColor: 'white', borderTop: '1px solid #f0f0f0' }}>
                 <input
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type a message..."
                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                    style={{ flex: 1, padding: '5px', marginRight: '5px' }}
+                    style={{
+                        flex: 1,
+                        padding: '15px 20px',
+                        borderRadius: '30px',
+                        border: '1.5px solid #eee',
+                        outline: 'none',
+                        fontSize: '1rem',
+                        backgroundColor: '#f8f9fa'
+                    }}
                 />
-                <button onClick={handleSend} style={{ padding: '5px 10px' }}>Send</button>
+                <button onClick={handleSend} className="btn" style={{
+                    padding: '12px',
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    backgroundColor: '#333',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                    flexShrink: 0
+                }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                </button>
             </div>
         </div>
     );

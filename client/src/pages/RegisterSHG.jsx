@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 
 const RegisterSHG = () => {
+    const { user, loading } = useAuth();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -13,6 +15,13 @@ const RegisterSHG = () => {
     });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(''); // For pending approval message
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!loading && user) {
+            navigate('/shg-dashboard', { replace: true });
+        }
+    }, [user, loading, navigate]);
 
     const { name, email, password, village, block, serviceCategory } = formData;
 
@@ -34,7 +43,7 @@ const RegisterSHG = () => {
     if (success) {
         return (
             <div className='card' style={{ maxWidth: '500px', margin: '20px auto', textAlign: 'center' }}>
-                <h2 style={{ color: 'green' }}>Registration Successful</h2>
+                <h2 style={{ color: 'var(--gov-blue)' }}>Registration Successful</h2>
                 <p>{success}</p>
                 <p>You will be able to login once the Admin approves your request.</p>
             </div>

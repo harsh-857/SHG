@@ -73,4 +73,42 @@ router.get('/user', auth, async (req, res) => {
     }
 });
 
+// @route   PUT api/auth/profile
+// @desc    Update user/shg profile (name and picture)
+// @access  Private
+router.put('/profile', auth, async (req, res) => {
+    try {
+        const { name, profilePicture } = req.body;
+
+        let user;
+        if (req.user.role === 'consumer') {
+            user = await User.findById(req.user.id);
+        } else if (req.user.role === 'shg') {
+            const SHGProvider = require('../models/SHGProvider');
+            user = await SHGProvider.findById(req.user.id);
+        } else if (req.user.role === 'admin') {
+            const Admin = require('../models/Admin');
+            user = await Admin.findById(req.user.id);
+        }
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        if (name) user.name = name;
+        if (profilePicture !== undefined) user.profilePicture = profilePicture;
+
+        await user.save();
+
+        // Return updated user without password
+        const updatedUser = user.toObject();
+        delete updatedUser.password;
+
+        res.json(updatedUser);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 module.exports = router;

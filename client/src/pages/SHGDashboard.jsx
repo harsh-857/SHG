@@ -43,6 +43,16 @@ const SHGDashboard = () => {
         }
     };
 
+    const handleUpdateAppointmentStatus = async (appointmentId, newStatus) => {
+        try {
+            await api.put(`/appointments/${appointmentId}/status`, { status: newStatus });
+            fetchAppointments(); // Refresh list after update
+        } catch (error) {
+            console.error(`Error updating appointment to ${newStatus}:`, error);
+            alert('Failed to update appointment. Please try again.');
+        }
+    };
+
     const fetchConversations = async () => {
         try {
             const res = await api.get('/chat/conversations');
@@ -102,53 +112,133 @@ const SHGDashboard = () => {
                     Messages
                     {conversations.some(c => c.unreadCount > 0) && (
                         <span style={{
-                            position: 'absolute', top: '-5px', right: '-5px',
-                            backgroundColor: 'red', color: 'white', borderRadius: '50%',
-                            padding: '2px 6px', fontSize: '0.7em', fontWeight: 'bold'
+                            position: 'absolute',
+                            top: '-8px',
+                            right: '-8px',
+                            backgroundColor: '#333',
+                            color: 'white',
+                            borderRadius: '50%',
+                            width: '24px',
+                            height: '24px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '0.75rem',
+                            fontWeight: 'bold',
+                            boxShadow: '0 0 0 4px rgba(0, 0, 0, 0.1)',
+                            animation: 'pulse 2s infinite'
                         }}>
-                            {conversations.reduce((acc, c) => acc + c.unreadCount, 0)}
+                            {conversations.reduce((acc, curr) => acc + (curr.unreadCount || 0), 0)}
                         </span>
                     )}
                 </button>
             </div>
 
             {activeTab === 'appointments' && (
-                <div className='card'>
-                    <h3>Appointments</h3>
-                    {appointments.length === 0 ? (
-                        <p>No appointments booked yet.</p>
-                    ) : (
-                        <table className="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>TimeSlot</th>
-                                    <th>Consumer Name</th>
-                                    <th>Contact Email</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {appointments.map((app) => (
-                                    <tr key={app._id}>
-                                        <td>{app.date}</td>
-                                        <td>{app.timeSlot}</td>
-                                        <td>{app.consumer?.name || 'Unknown'}</td>
-                                        <td>{app.consumer?.email || 'N/A'}</td>
-                                        <td>
-                                            <span style={{
-                                                color: app.status === 'confirmed' ? 'green' :
-                                                    app.status === 'completed' ? 'blue' :
-                                                        app.status === 'cancelled' ? 'red' : 'orange'
-                                            }}>
-                                                {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    )}
+                <div>
+                    <div className='card' style={{ marginBottom: '20px' }}>
+                        <h3>Pending Requests</h3>
+                        {appointments.filter(a => a.status === 'pending').length === 0 ? (
+                            <p>No pending appointment requests.</p>
+                        ) : (
+                            <div className="table-responsive">
+                                <table className="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>TimeSlot</th>
+                                            <th>Consumer Name</th>
+                                            <th>Contact Email</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {appointments.filter(a => a.status === 'pending').map((app) => (
+                                            <tr key={app._id}>
+                                                <td>{app.date}</td>
+                                                <td>{app.timeSlot}</td>
+                                                <td>{app.consumer?.name || 'Unknown'}</td>
+                                                <td>{app.consumer?.email || 'N/A'}</td>
+                                                <td>
+                                                    <span style={{
+                                                        color: app.status === 'confirmed' ? 'var(--gov-blue)' :
+                                                            app.status === 'completed' ? '#2ecc71' :
+                                                                app.status === 'cancelled' ? '#e74c3c' : '#f39c12'
+                                                    }}>
+                                                        {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
+                                                    </span>
+                                                    {app.status === 'pending' && (
+                                                        <div style={{ marginTop: '5px' }}>
+                                                            <button
+                                                                style={{ background: 'green', color: 'white', border: 'none', padding: '4px 8px', marginRight: '5px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}
+                                                                onClick={() => handleUpdateAppointmentStatus(app._id, 'confirmed')}
+                                                            >
+                                                                Approve
+                                                            </button>
+                                                            <button
+                                                                style={{ background: 'red', color: 'white', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}
+                                                                onClick={() => handleUpdateAppointmentStatus(app._id, 'cancelled')}
+                                                            >
+                                                                Reject
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className='card'>
+                        <h3>Upcoming Schedule</h3>
+                        {appointments.filter(a => a.status === 'confirmed').length === 0 ? (
+                            <p>No upcoming schedules.</p>
+                        ) : (
+                            <div className="table-responsive">
+                                <table className="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>TimeSlot</th>
+                                            <th>Consumer Name</th>
+                                            <th>Contact Email</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {appointments.filter(a => a.status === 'confirmed').map((app) => (
+                                            <tr key={app._id}>
+                                                <td>{app.date}</td>
+                                                <td>{app.timeSlot}</td>
+                                                <td>{app.consumer?.name || 'Unknown'}</td>
+                                                <td>{app.consumer?.email || 'N/A'}</td>
+                                                <td>
+                                                    <span style={{ color: 'green', fontWeight: 'bold' }}>Confirmed</span>
+                                                    <div style={{ marginTop: '5px' }}>
+                                                        <button
+                                                            style={{ background: 'blue', color: 'white', border: 'none', padding: '4px 8px', marginRight: '5px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}
+                                                            onClick={() => handleUpdateAppointmentStatus(app._id, 'completed')}
+                                                        >
+                                                            Mark Done
+                                                        </button>
+                                                        <button
+                                                            style={{ background: 'red', color: 'white', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}
+                                                            onClick={() => handleUpdateAppointmentStatus(app._id, 'cancelled')}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </div>
                 </div>
             )}
 
@@ -180,13 +270,20 @@ const SHGDashboard = () => {
                                             {new Date(conv.lastMessage.timestamp).toLocaleDateString()}
                                         </span>
                                         {conv.unreadCount > 0 && (
-                                            <span style={{
-                                                backgroundColor: 'red', color: 'white', borderRadius: '10px',
-                                                padding: '2px 8px', fontSize: '0.8em', fontWeight: 'bold',
-                                                display: 'inline-block', marginTop: '5px'
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '5px',
+                                                marginTop: '8px',
+                                                color: '#ff4757',
+                                                fontWeight: 'bold',
+                                                fontSize: '0.85rem'
                                             }}>
-                                                {conv.unreadCount} new
-                                            </span>
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ animation: 'pulse 1.5s infinite' }}>
+                                                    <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 18H4V8L12 13L20 8V18ZM12 11L4 6H20L12 11Z" />
+                                                </svg>
+                                                <span>{conv.unreadCount} new</span>
+                                            </div>
                                         )}
                                     </div>
                                 </li>

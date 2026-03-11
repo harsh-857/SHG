@@ -12,6 +12,7 @@ import SHGDashboard from './pages/SHGDashboard';
 import About from './pages/About';
 import LoginSelect from './pages/LoginSelect';
 import RegisterSelect from './pages/RegisterSelect';
+import Profile from './pages/Profile';
 
 import { AuthProvider } from './context/AuthContext';
 
@@ -25,6 +26,7 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/about" element={<About />} />
+                            <Route path="/profile" element={<Profile />} />
                             <Route path="/login-select" element={<LoginSelect />} />
                             <Route path="/register-select" element={<RegisterSelect />} />
                             <Route path="/login" element={<Login />} />

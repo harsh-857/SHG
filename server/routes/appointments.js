@@ -87,4 +87,41 @@ router.get('/my-appointments', auth, async (req, res) => {
     }
 });
 
+// @route   PUT api/appointments/:id/status
+// @desc    Update appointment status (approve/reject/complete)
+// @access  Private
+router.put('/:id/status', auth, async (req, res) => {
+    try {
+        const { status } = req.body;
+
+        // Ensure valid status
+        if (!['confirmed', 'cancelled', 'completed'].includes(status)) {
+            return res.status(400).json({ msg: 'Invalid status' });
+        }
+
+        let appointment = await Appointment.findById(req.params.id);
+
+        if (!appointment) {
+            return res.status(404).json({ msg: 'Appointment not found' });
+        }
+
+        // Verify the user is the provider for this appointment. 
+        // req.user.id from the auth middleware should match the provider ID.
+        if (appointment.provider.toString() !== req.user.id) {
+            return res.status(401).json({ msg: 'User not authorized to update this appointment' });
+        }
+
+        appointment.status = status;
+        await appointment.save();
+
+        res.json(appointment);
+    } catch (err) {
+        console.error(err.message);
+        if (err.kind === 'ObjectId') {
+            return res.status(404).json({ msg: 'Appointment not found' });
+        }
+        res.status(500).send('Server Error');
+    }
+});
+
 module.exports = router;

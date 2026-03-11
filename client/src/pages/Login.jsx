@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
-    const { login } = useAuth();
+    const { login, user, loading } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    // Redirect already authenticated users
+    useEffect(() => {
+        if (!loading && user) {
+            if (user.role === 'admin') navigate('/admin', { replace: true });
+            else if (user.role === 'shg') navigate('/shg-dashboard', { replace: true });
+            else navigate('/services', { replace: true });
+        }
+    }, [user, loading, navigate]);
 
     const { email, password } = formData;
 
@@ -22,13 +31,13 @@ const Login = () => {
             const res = await api.post('/auth/login', { email, password });
             login(res.data.token, res.data.user);
 
-            // Redirect based on role
+            // Redirect based on role with replace history
             if (res.data.user.role === 'admin') {
-                navigate('/admin');
+                navigate('/admin', { replace: true });
             } else if (res.data.user.role === 'shg') {
-                navigate('/shg-dashboard');
+                navigate('/shg-dashboard', { replace: true });
             } else {
-                navigate('/services');
+                navigate('/services', { replace: true });
             }
         } catch (err) {
             console.error('Login error details:', err.response?.data);

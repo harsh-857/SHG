@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 
 const RegisterConsumer = () => {
-    const { login } = useAuth();
+    const { login, user, loading } = useAuth();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -15,6 +15,12 @@ const RegisterConsumer = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (!loading && user) {
+            navigate('/services', { replace: true });
+        }
+    }, [user, loading, navigate]);
+
     const { name, email, password, village, block } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,7 +30,7 @@ const RegisterConsumer = () => {
         try {
             const res = await api.post('/auth/register-user', formData);
             login(res.data.token, res.data.user);
-            navigate('/services');
+            navigate('/services', { replace: true });
         } catch (err) {
             console.error('Registration error details:', err.response?.data);
             const rawError = err.response?.data;
