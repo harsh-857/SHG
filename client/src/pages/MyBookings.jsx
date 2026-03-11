@@ -6,7 +6,7 @@ import api from '../utils/api';
 const MyBookings = () => {
     const { user, loading } = useAuth();
     const navigate = useNavigate();
-    const [appointments, setAppointments] = parseInt(useState([]));
+    const [appointments, setAppointments] = useState([]);
     const [fetching, setFetching] = useState(true);
     const [error, setError] = useState('');
 
