@@ -243,12 +243,18 @@ body::before {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
-  padding: 25px;
+  padding: 30px;
   margin-bottom: 25px;
   border-radius: 16px;
   box-shadow: var(--shadow-sm);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   animation: fadeInUp 0.5s ease-out forwards;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 20px 15px;
+  }
 }
 
 .card:hover {
@@ -347,6 +353,26 @@ body::before {
 
 .btn:active {
   transform: translateY(0);
+}
+
+/* Responsive Button Group */
+.btn-group-responsive {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+@media (max-width: 768px) {
+  .btn-group-responsive {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .btn-group-responsive .btn {
+    width: 100%;
+    min-width: unset !important;
+  }
 }
 
 .logo {

@@ -18,11 +18,11 @@ const LoginSelect = () => {
         <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
             <h2>Login</h2>
             <p>Please select your role to proceed.</p>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '30px' }}>
-                <Link to="/login?role=consumer" className="btn" style={{ minWidth: '200px' }}>
+            <div className="btn-group-responsive">
+                <Link to="/login?role=consumer" className="btn">
                     Login as User
                 </Link>
-                <Link to="/login?role=shg" className="btn" style={{ minWidth: '200px', backgroundColor: '#555' }}>
+                <Link to="/login?role=shg" className="btn" style={{ backgroundColor: '#555' }}>
                     Login as SHG Member
                 </Link>
             </div>
