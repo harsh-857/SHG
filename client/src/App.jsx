@@ -13,6 +13,7 @@ import About from './pages/About';
 import LoginSelect from './pages/LoginSelect';
 import RegisterSelect from './pages/RegisterSelect';
 import Profile from './pages/Profile';
+import MyBookings from './pages/MyBookings';
 
 import { AuthProvider } from './context/AuthContext';
 
@@ -27,6 +28,7 @@ function App() {
                             <Route path="/" element={<Home />} />
                             <Route path="/about" element={<About />} />
                             <Route path="/profile" element={<Profile />} />
+                            <Route path="/my-bookings" element={<MyBookings />} />
                             <Route path="/login-select" element={<LoginSelect />} />
                             <Route path="/register-select" element={<RegisterSelect />} />
                             <Route path="/login" element={<Login />} />

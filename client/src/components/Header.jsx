@@ -58,6 +58,7 @@ const Header = () => {
                             <li><Link to='/profile' onClick={() => setIsMenuOpen(false)}>Profile</Link></li>
                             {user.role === 'admin' && <li><Link to='/admin' onClick={() => setIsMenuOpen(false)}>Admin</Link></li>}
                             {user.role === 'shg' && <li><Link to='/shg-dashboard' onClick={() => setIsMenuOpen(false)}>Dashboard</Link></li>}
+                            {user.role === 'consumer' && <li><Link to='/my-bookings' onClick={() => setIsMenuOpen(false)}>My Bookings</Link></li>}
                             <li><button onClick={onLogout} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: '15px 20px', font: 'inherit', width: '100%', textAlign: 'center' }}>Logout</button></li>
                         </>
                     ) : (
