@@ -27,7 +27,14 @@ export const AuthProvider = ({ children }) => {
                 try {
                     const res = await api.get('/auth/user');
                     setUser(res.data);
-                    localStorage.setItem('user', JSON.stringify(res.data)); // Update cache
+                    try {
+                        // Omit profilePicture from local cache to prevent 5MB QuotaExceededError crashes
+                        const cacheUser = { ...res.data };
+                        delete cacheUser.profilePicture;
+                        localStorage.setItem('user', JSON.stringify(cacheUser)); // Update cache
+                    } catch (storageError) {
+                        console.warn("Could not cache user in localStorage (Quota exceeded):", storageError);
+                    }
                 } catch (err) {
                     console.error("Auth verification failed or timed out:", err.message);
                     // Only clear token if it's explicitly a 401 Unauthorized, not a network timeout from Render cold start
@@ -48,16 +55,25 @@ export const AuthProvider = ({ children }) => {
     }, [token]);
 
     const login = (token, userData) => {
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(userData));
+        try {
+            localStorage.setItem('token', token);
+            // Omit profilePicture from local cache
+            const cacheUser = { ...userData };
+            delete cacheUser.profilePicture;
+            localStorage.setItem('user', JSON.stringify(cacheUser));
+        } catch (storageError) {
+            console.warn("Could not store to localStorage during login:", storageError);
+        }
         setToken(token);
         setUser(userData);
         api.defaults.headers.common['x-auth-token'] = token;
     };
 
     const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        try {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+        } catch (e) {}
         setToken(null);
         setUser(null);
         delete api.defaults.headers.common['x-auth-token'];
