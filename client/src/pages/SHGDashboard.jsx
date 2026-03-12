@@ -40,6 +40,7 @@ const SHGDashboard = () => {
             setAppointments(res.data);
         } catch (error) {
             console.error("Error fetching appointments:", error);
+            // Optionally set an error state here, but we ensure it doesn't crash
         }
     };
 
